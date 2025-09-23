@@ -23,9 +23,6 @@ Thumbs.db
 # Jupyter / notebooks
 *.ipynb_checkpoints
 
-# Data and model cache
-mlruns/
-
 # Модели
 *.joblib
 
