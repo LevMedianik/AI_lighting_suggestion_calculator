@@ -23,13 +23,12 @@ Thumbs.db
 # Jupyter / notebooks
 *.ipynb_checkpoints
 
-# Data and model cache (если не нужно хранить в репозитории)
+# Data and model cache
 data/
 *.csv
 *.xlsx
 
 # Модели
-*.pkl
 *.joblib
 
 # Logs
