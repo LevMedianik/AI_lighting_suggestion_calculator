@@ -27,6 +27,7 @@ Thumbs.db
 data/
 *.csv
 *.xlsx
+mlruns/
 
 # Модели
 *.joblib
