@@ -23,9 +23,6 @@ Thumbs.db
 # Jupyter / notebooks
 *.ipynb_checkpoints
 
-# Модели
-*.joblib
-
 # Logs
 *.log
 
