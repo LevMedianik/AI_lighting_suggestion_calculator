@@ -1,0 +1,10 @@
+artifact_location: file:///c:/Users/User/Desktop/calculator/mlruns/0/models/m-1dd8e0fef1db42a0bc4aca578ddf90aa/artifacts
+creation_timestamp: 1758274217559
+experiment_id: '0'
+last_updated_timestamp: 1758274221308
+model_id: m-1dd8e0fef1db42a0bc4aca578ddf90aa
+model_type: null
+name: LightGBM_model
+source_run_id: f78a77d170064c33ae72feecebd74386
+status: 2
+status_message: null

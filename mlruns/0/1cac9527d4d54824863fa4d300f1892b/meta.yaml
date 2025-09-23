@@ -1,0 +1,14 @@
+artifact_uri: file:///c:/Users/User/Desktop/calculator/mlruns/0/1cac9527d4d54824863fa4d300f1892b/artifacts
+end_time: 1758274199681
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 1cac9527d4d54824863fa4d300f1892b
+run_name: RandomForest
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1758274194754
+status: 3
+tags: []
+user_id: User

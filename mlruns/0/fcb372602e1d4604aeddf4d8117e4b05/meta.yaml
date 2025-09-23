@@ -1,0 +1,14 @@
+artifact_uri: file:///c:/Users/User/Desktop/calculator/mlruns/0/fcb372602e1d4604aeddf4d8117e4b05/artifacts
+end_time: 1758273524709
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: fcb372602e1d4604aeddf4d8117e4b05
+run_name: KNN
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1758273521170
+status: 3
+tags: []
+user_id: User

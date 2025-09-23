@@ -1,0 +1,10 @@
+artifact_location: file:///c:/Users/User/Desktop/calculator/mlruns/0/models/m-e8290b30d8d2404291389b996a478a52/artifacts
+creation_timestamp: 1758269844659
+experiment_id: '0'
+last_updated_timestamp: 1758269848600
+model_id: m-e8290b30d8d2404291389b996a478a52
+model_type: null
+name: XGBoost_model
+source_run_id: 2781a0f33bf54709b5ea86f67ac6b132
+status: 2
+status_message: null

@@ -1,0 +1,14 @@
+artifact_uri: file:///c:/Users/User/Desktop/calculator/mlruns/0/db16e5c4232348c0bdd33f7c3e9bb098/artifacts
+end_time: 1758269835937
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: db16e5c4232348c0bdd33f7c3e9bb098
+run_name: GradientBoosting
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1758269832266
+status: 3
+tags: []
+user_id: User

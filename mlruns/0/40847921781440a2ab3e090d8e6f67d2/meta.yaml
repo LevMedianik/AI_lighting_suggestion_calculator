@@ -1,0 +1,14 @@
+artifact_uri: file:///c:/Users/User/Desktop/calculator/mlruns/0/40847921781440a2ab3e090d8e6f67d2/artifacts
+end_time: 1758269587678
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 40847921781440a2ab3e090d8e6f67d2
+run_name: LinearRegression
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1758269584110
+status: 3
+tags: []
+user_id: User
