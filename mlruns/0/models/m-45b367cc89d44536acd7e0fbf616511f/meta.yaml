@@ -1,0 +1,10 @@
+artifact_location: file:///c:/Users/User/Desktop/calculator/mlruns/0/models/m-45b367cc89d44536acd7e0fbf616511f/artifacts
+creation_timestamp: 1758269836031
+experiment_id: '0'
+last_updated_timestamp: 1758269839667
+model_id: m-45b367cc89d44536acd7e0fbf616511f
+model_type: null
+name: KNN_model
+source_run_id: c3f51c165d2c416ca7128fb11b4db255
+status: 2
+status_message: null

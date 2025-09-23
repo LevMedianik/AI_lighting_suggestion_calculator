@@ -1,0 +1,14 @@
+artifact_uri: file:///c:/Users/User/Desktop/calculator/mlruns/0/4da45750d86b4170bf6fedd11b5c39c7/artifacts
+end_time: 1758273532502
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 4da45750d86b4170bf6fedd11b5c39c7
+run_name: XGBoost
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1758273528553
+status: 3
+tags: []
+user_id: User

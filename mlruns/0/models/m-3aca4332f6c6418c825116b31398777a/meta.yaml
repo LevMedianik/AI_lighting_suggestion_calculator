@@ -1,0 +1,10 @@
+artifact_location: file:///c:/Users/User/Desktop/calculator/mlruns/0/models/m-3aca4332f6c6418c825116b31398777a/artifacts
+creation_timestamp: 1758269839778
+experiment_id: '0'
+last_updated_timestamp: 1758269843209
+model_id: m-3aca4332f6c6418c825116b31398777a
+model_type: null
+name: SVR_model
+source_run_id: 2936514dfe694f8899cfc04e905490cf
+status: 2
+status_message: null

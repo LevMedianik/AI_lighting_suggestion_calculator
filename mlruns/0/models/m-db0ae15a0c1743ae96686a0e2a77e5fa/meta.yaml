@@ -1,0 +1,10 @@
+artifact_location: file:///c:/Users/User/Desktop/calculator/mlruns/0/models/m-db0ae15a0c1743ae96686a0e2a77e5fa/artifacts
+creation_timestamp: 1758269318082
+experiment_id: '0'
+last_updated_timestamp: 1758269321738
+model_id: m-db0ae15a0c1743ae96686a0e2a77e5fa
+model_type: null
+name: RandomForest_model
+source_run_id: 7fe163d622de4ca094356f2cd217c95a
+status: 2
+status_message: null

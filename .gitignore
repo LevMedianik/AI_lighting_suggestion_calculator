@@ -1,0 +1,41 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.env
+.venv/
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# VSCode / PyCharm settings
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Jupyter / notebooks
+*.ipynb_checkpoints
+
+# Data and model cache (если не нужно хранить в репозитории)
+data/
+*.csv
+*.xlsx
+
+# Модели
+*.pkl
+*.joblib
+
+# Logs
+*.log
+
+# Build / packaging
+build/
+dist/
+*.egg-info/

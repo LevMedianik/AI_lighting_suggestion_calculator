@@ -1,0 +1,10 @@
+artifact_location: file:///c:/Users/User/Desktop/calculator/mlruns/0/models/m-d1c61351646b4c3e933a1c10ac3daa8d/artifacts
+creation_timestamp: 1758273509580
+experiment_id: '0'
+last_updated_timestamp: 1758273513221
+model_id: m-d1c61351646b4c3e933a1c10ac3daa8d
+model_type: null
+name: LinearRegression_model
+source_run_id: f3219f24557048079b3e4326f4db1e13
+status: 2
+status_message: null

@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ИИ-калькулятор подбора освещения</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Плавный скролл -->
+  <style>
+    html, body { scroll-behavior: smooth; }
+    /* Скрытие скроллбара у галереи */
+    .scrollbar-hide::-webkit-scrollbar { display: none; }
+    .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-900">
+
+  <!-- Hero -->
+  <section id="hero" class="min-h-screen flex flex-col items-center justify-center text-center 
+                         bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] 
+                         from-indigo-500/70 via-purple-600/80 to-gray-900 text-white px-6">
+    <h1 class="text-4xl md:text-6xl font-bold mb-6">ИИ-калькулятор подбора освещения</h1>
+    <p class="text-lg md:text-xl text-indigo-100 max-w-2xl mx-auto mb-10">
+        Умный помощник, который рассчитывает количество и тип светильников для вашего помещения
+        по нормативам ГОСТ, СНиП и СП. Экономьте время и получайте точные результаты за секунды.
+    </p>
+    <div class="flex gap-4 mb-10">
+      <a href="#calculator"
+         class="rounded-xl bg-white text-indigo-600 font-semibold px-6 py-3 shadow 
+                hover:shadow-lg transition-all duration-300">
+        Попробовать
+      </a>
+      <a href="#about"
+         class="rounded-xl bg-indigo-800/40 border border-white/50 text-white font-semibold px-6 py-3 shadow 
+                hover:bg-indigo-700/50 transition-all duration-300">
+        О проекте
+      </a>
+    </div>
+
+    <!-- Галерея светильников -->
+    <div id="lamp-gallery" 
+         class="mt-6 flex gap-6 overflow-x-auto px-4 pb-4 scrollbar-hide w-full max-w-4xl">
+      <img src="/static/images/i.jpeg" alt="Светильник" class="h-48 rounded-xl shadow" />
+      <img src="/static/images/TH_80130.jpg" alt="Светильник" class="h-48 rounded-xl shadow" />
+      <img src="/static/images/svet.jpg" alt="Светильник" class="h-48 rounded-xl shadow" />
+      <img src="/static/images/LS-1_600.jpg" alt="Светильник" class="h-48 rounded-xl shadow" />
+      <img src="/static/images/6019843628.jpg" alt="Светильник" class="h-48 rounded-xl shadow" />
+      <img src="/static/images/vstr1.jpg" alt="Светильник" class="h-48 rounded-xl shadow" />
+      <img src="/static/images/fonar.jpg" alt="Светильник" class="h-48 rounded-xl shadow" />
+      <img src="/static/images/fonar2.jpeg" alt="Светильник" class="h-48 rounded-xl shadow" />
+      <img src="/static/images/lustra1.jpeg" alt="Светильник" class="h-48 rounded-xl shadow" />
+      <img src="/static/images/lustra2.jpeg" alt="Светильник" class="h-48 rounded-xl shadow" />
+      <img src="/static/images/12.jpg" alt="Светильник" class="h-48 rounded-xl shadow" />
+    </div>
+  </section>
+
+    <!-- Calculator -->
+    <section id="calculator" class="min-h-screen flex items-center justify-center px-6 scroll-mt-24">
+      <div class="w-full max-w-6xl grid grid-cols-1 md:grid-cols-5 gap-6 
+                  bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg p-8">
+        
+        <!-- Форма (2 колонки из 5) -->
+        <form id="lighting-form" class="bg-white rounded-xl shadow p-6 space-y-5 text-base md:col-span-2" novalidate>
+          <h2 class="text-lg font-semibold text-gray-800">Параметры помещения</h2>
+
+          <!-- Тип помещения -->
+          <div>
+            <label for="room_type" class="block text-sm font-medium mb-1">Тип помещения</label>
+            <select id="room_type" name="room_type" required
+                    class="w-full rounded-lg border-gray-300 px-3 py-2 shadow-sm 
+                          focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+              <option value="" disabled selected>Выберите…</option>
+              <option>Балкон/лоджия</option>
+              <option>Библиотека</option>
+              <option>Больница (палата)</option>
+              <option>Выставочный зал</option> 
+              <option>Гостиная</option>
+              <option>Жилое помещение</option>
+              <option>Зал кинотеатра</option>
+              <option>Зал театра</option>
+              <option>Кафе</option>
+              <option>Конференц-зал</option>
+              <option>Концертный зал</option>
+              <option>Коридор (жилой)</option>
+              <option>Коридор (общественный)</option>
+              <option>Кухня</option>
+              <option>Лестничная клетка</option>
+              <option>Музейный зал</option>
+              <option>Обеденный зал (ресторан/столовая)</option>
+              <option>Офисное помещение</option>
+              <option>Парковка</option>
+              <option>Производственные (грубые работы)</option>
+              <option>Производственные (общее)</option>
+              <option>Производственные (точные работы)</option>
+              <option>Сад/парк</option>
+              <option>Санузел</option>
+              <option>Склад</option>
+              <option>Спальня</option>
+              <option>Стадион</option>
+              <option>Сцена театра</option>
+              <option>Торговый зал</option>
+              <option>Фойе театра/кинотеатра</option>
+              <option>Холодильный склад</option>
+              <option>Цех (ресторан/столовая)</option>
+              <option>Цех деревообработки</option>
+              <option>Электромонтажный цех</option>
+              <option>Школа (класс)</option>
+            </select>
+          </div>
+
+          <!-- Площадь -->
+          <div id="area_field">
+            <label for="area_m2" class="block text-sm font-medium mb-1">Площадь (м²)</label>
+            <input id="area_m2" name="area_m2" type="number" min="1" step="0.1"
+                  class="w-full rounded-lg border-gray-300 px-3 py-2 shadow-sm 
+                          focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                  placeholder="40" />
+          </div>
+
+          <!-- Высота потолка -->
+          <div id="ceiling_field">
+            <label for="ceiling_h" class="block text-sm font-medium mb-1">Высота потолка (м)</label>
+            <input id="ceiling_h" name="ceiling_h" type="number" min="0" step="0.1"
+                  class="w-full rounded-lg border-gray-300 px-3 py-2 shadow-sm 
+                          focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                  placeholder="3.2" />
+          </div>
+
+          <!-- Бюджет -->
+          <div>
+            <label for="budget" class="block text-sm font-medium mb-1">Бюджет (₽)</label>
+            <input id="budget" name="budget" type="number" min="0" step="100" required autocomplete="off"
+                  class="w-full rounded-lg border-gray-300 px-3 py-2 shadow-sm 
+                          focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                  placeholder="30000" />
+          </div>
+
+          <!-- Кнопка -->
+          <button type="submit" id="submit-btn"
+                  class="w-full rounded-lg bg-indigo-600 px-4 py-3 text-white font-semibold 
+                        hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 transition-all duration-300">
+            Подобрать
+          </button>
+
+          <div id="status" class="text-sm text-gray-600" role="status" aria-live="polite"></div>
+        </form>
+
+        <!-- Результаты (3 колонки из 5) -->
+        <div class="bg-white rounded-xl shadow p-6 space-y-5 md:col-span-3">
+          <h2 class="text-lg font-semibold text-gray-800">Результаты и рекомендации</h2>
+          <div id="summary" class="grid grid-cols-2 lg:grid-cols-3 gap-4 text-sm"></div>
+          <div id="recommendations" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+          <div id="placeholder" class="text-sm text-gray-500">
+            Заполните параметры и нажмите «Подобрать», чтобы увидеть рекомендации.
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+  <!-- About -->
+  <section id="about" class="min-h-screen flex items-center justify-center 
+                          bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] 
+                          from-gray-100 via-white to-gray-200 px-6 scroll-mt-24">
+    <div class="text-center max-w-4xl space-y-8 p-10 rounded-2xl shadow-lg bg-white/70 backdrop-blur">
+      <h2 class="text-4xl font-bold text-gray-800">О проекте</h2>
+
+      <p class="text-lg text-gray-700 leading-relaxed">
+        Этот калькулятор создан на базе <span class="font-semibold">AI-модели</span> 
+        для подбора освещения. Он учитывает требования нормативных документов 
+        (ГОСТ, СНиП, СанПиН) и помогает выбрать оптимальные светильники 
+        для разных помещений. 
+        Достаточно ввести параметры, и система рассчитает необходимое количество светильников, 
+        их тип и примерную стоимость.
+      </p>
+
+      <!-- Вводимые параметры -->
+      <div class="text-left space-y-4">
+        <h3 class="text-2xl font-semibold text-indigo-700">Какие параметры вводятся?</h3>
+        <ul class="list-disc list-inside text-gray-700 text-lg space-y-2">
+          <li><b>Тип помещения</b> — офис, кафе, склад, школа и др.</li>
+          <li><b>Площадь (м²)</b> — обязательный параметр для расчёта.</li>
+          <li><b>Высота потолка (м)</b> — используется, если помещение имеет потолок.</li>
+          <li><b>Бюджет (₽)</b> — система подбирает решение, укладывающееся в заданный лимит.</li>
+        </ul>
+      </div>
+
+      <!-- Примеры норм -->
+      <div class="overflow-x-auto">
+        <h3 class="text-2xl font-semibold text-indigo-700 mb-4">Примеры норм освещённости*</h3>
+        <table class="w-full border-collapse rounded-xl overflow-hidden text-left shadow">
+          <thead class="bg-indigo-600 text-white">
+            <tr>
+              <th class="px-4 py-2">Помещение</th>
+              <th class="px-4 py-2">Норма, лк</th>
+              <th class="px-4 py-2">Документ</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y">
+            <tr class="hover:bg-indigo-50">
+              <td class="px-4 py-2">Офисное помещение</td>
+              <td class="px-4 py-2">500</td>
+              <td class="px-4 py-2">
+                <a href="https://kola.rosavtodor.gov.ru/storage/app/media/kola/uploaded-files/08-16-sp-52133302016-estestvennoe-i-iskusstvennoe-osveshchenie-aktualizirovannaya-redaktsiya-snip-23-05-95-1.pdf" 
+                   class="text-indigo-600 hover:underline" target="_blank">СП 52.13330.2016</a>
+              </td>
+            </tr>
+            <tr class="hover:bg-indigo-50">
+              <td class="px-4 py-2">Жилое помещение</td>
+              <td class="px-4 py-2">200</td>
+              <td class="px-4 py-2">
+                <a href="https://glavrp.ru/f/sanitarno-zaschitnye-zony-i-sanitarnaya-klassifikaciya-predpriyatiy,-sooruzheniy-i-inyh-ob_ektov.pdf" 
+                   class="text-indigo-600 hover:underline" target="_blank">СанПиН 2.2.1</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="text-sm text-gray-500 mt-3">*Приведены только некоторые примеры. Полный перечень норм учитывается калькулятором автоматически.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="border-t py-6 text-center text-xs text-gray-500">
+    © 2025 Lighting AI Calculator — прототип.
+  </footer>
+
+  <!-- Script -->
+  <script>
+    const API_URL = "http://127.0.0.1:8000/predict";
+    const form = document.getElementById("lighting-form");
+    const statusEl = document.getElementById("status");
+    const placeholderEl = document.getElementById("placeholder");
+    const summaryEl = document.getElementById("summary");
+    const recsEl = document.getElementById("recommendations");
+    const submitBtn = document.getElementById("submit-btn");
+
+    const ceilingField = document.getElementById("ceiling_field");
+    const ceilingInput = document.getElementById("ceiling_h");
+
+    // помещения без потолка
+    const noCeilingRooms = ["Парковка", "Сад/парк", "Стадион"];
+
+    document.getElementById("room_type").addEventListener("change", (e) => {
+      const selected = e.target.value;
+      if (noCeilingRooms.includes(selected)) {
+        ceilingField.style.display = "none";
+        ceilingInput.value = 0;
+      } else {
+        ceilingField.style.display = "";
+        ceilingInput.value = "";
+      }
+    });
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const room_type = document.getElementById("room_type").value;
+      const ceiling_h = parseFloat(ceilingInput.value) || 0;
+      const budget = parseFloat(document.getElementById("budget").value);
+      const area_m2 = parseFloat(document.getElementById("area_m2").value);
+
+      const payload = { room_type, area_m2, ceiling_h, budget };
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Считаем…";
+      statusEl.textContent = "Запрос к API…";
+      placeholderEl.style.display = "none";
+      summaryEl.innerHTML = "";
+      recsEl.innerHTML = "";
+
+      try {
+        const res = await fetch(API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        if (!res.ok) throw new Error(`API error: ${res.status}`);
+        const data = await res.json();
+        statusEl.textContent = "Готово.";
+        renderSummary(data);
+      } catch (err) {
+        console.error(err);
+        statusEl.textContent = "Ошибка при расчёте. Попробуйте ещё раз.";
+        placeholderEl.style.display = "";
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Подобрать";
+      }
+    });
+
+    function renderSummary(d) {
+      const items = [
+        { label: "Требуемая освещённость", value: d.required_lux ? `${d.required_lux} лк` : "—" },
+        { label: "Суммарная освещённость", value: d.total_lumens ? `${d.total_lumens} лм` : "—" },
+        { label: "Кол-во светильников", value: d.fixtures_count ?? "—" },
+        { label: "Тип светильника", value: d.fixture_type ?? "—" },
+        { label: "Марка светильника", value: d.model_name ?? "—" },
+        { label: "Цена за светильник", value: d.price_rub ? `${d.price_rub.toLocaleString('ru-RU')} ₽` : "—" },
+        { label: "Итоговая стоимость", value: d.total_cost ? `${d.total_cost.toLocaleString('ru-RU')} ₽` : "—" },
+        { label: "Нормативный документ", value: d.norm_ref ?? "—" }
+      ];
+
+      summaryEl.innerHTML = items.map(it => `
+        <div class="rounded-xl border p-4 hover:shadow-md transition-all duration-300 break-words">
+          <div class="text-xs text-gray-500">${it.label}</div>
+          <div class="text-sm font-semibold">${it.value}</div>
+        </div>
+      `).join("");
+
+      if (d.warning) {
+        summaryEl.innerHTML += `
+          <div class="col-span-full rounded-xl border border-yellow-400 bg-yellow-50 p-3 text-sm text-yellow-800">
+            ${escapeHtml(d.warning)}
+          </div>
+        `;
+      }
+    }
+
+    function escapeHtml(str) {
+      return String(str).replace(/[&<>"']/g, s => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+      }[s]));
+    }
+
+    // JS fallback для плавного скролла
+    document.querySelectorAll('a[href^="#"]').forEach(link => {
+      link.addEventListener('click', e => {
+        const id = link.getAttribute('href').slice(1);
+        const target = document.getElementById(id);
+        if (!target) return;
+        e.preventDefault();
+        (document.scrollingElement || document.documentElement)
+          .scrollTo({ top: target.offsetTop, behavior: 'smooth' });
+      });
+    });
+
+    // Лента светильников (движение по курсору)
+    const gallery = document.getElementById('lamp-gallery');
+    let scrollSpeed = 0;
+
+    document.addEventListener('mousemove', (e) => {
+      const screenWidth = window.innerWidth;
+      const centerX = screenWidth / 2;
+
+      // смещение курсора от центра (-1..1)
+      scrollSpeed = (e.clientX - centerX) / centerX * 10;
+    });
+
+    // плавная анимация (даже если курсор стоит на месте)
+    function animateScroll() {
+      if (gallery) {
+        gallery.scrollLeft += scrollSpeed;
+      }
+      requestAnimationFrame(animateScroll);
+    }
+    animateScroll();
+  </script>
+</body>
+</html>

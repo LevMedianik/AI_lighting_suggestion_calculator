@@ -1,0 +1,18 @@
+{
+  "dataframe_split": {
+    "columns": [
+      "area_m2",
+      "ceiling_h",
+      "budget",
+      "required_lux"
+    ],
+    "data": [
+      [
+        161.0,
+        3.6,
+        81539.0,
+        198.0
+      ]
+    ]
+  }
+}

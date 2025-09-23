@@ -1,0 +1,35 @@
+artifact_path: file:///c:/Users/User/Desktop/calculator/mlruns/0/models/m-0c86d05deb894bf88f1e889cbe03d8c0/artifacts
+flavors:
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.sklearn
+    model_path: model.pkl
+    predict_fn: predict
+    python_version: 3.12.2
+  sklearn:
+    code: null
+    pickled_model: model.pkl
+    serialization_format: cloudpickle
+    sklearn_version: 1.7.1
+is_signature_from_type_hint: false
+mlflow_version: 3.4.0
+model_id: m-0c86d05deb894bf88f1e889cbe03d8c0
+model_size_bytes: 831337
+model_uuid: m-0c86d05deb894bf88f1e889cbe03d8c0
+prompts: null
+run_id: d1e75bd0f490424695914d18e222da65
+saved_input_example_info:
+  artifact_path: input_example.json
+  pandas_orient: split
+  serving_input_path: serving_input_example.json
+  type: dataframe
+signature:
+  inputs: '[{"type": "double", "name": "area_m2", "required": true}, {"type": "double",
+    "name": "ceiling_h", "required": true}, {"type": "double", "name": "budget", "required":
+    true}, {"type": "double", "name": "required_lux", "required": true}]'
+  outputs: '[{"type": "float", "required": true}]'
+  params: null
+type_hint_from_example: false
+utc_time_created: '2025-09-19 09:30:13.483321'

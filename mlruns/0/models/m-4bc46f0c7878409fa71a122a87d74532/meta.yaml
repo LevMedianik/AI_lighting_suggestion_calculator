@@ -1,0 +1,10 @@
+artifact_location: file:///c:/Users/User/Desktop/calculator/mlruns/0/models/m-4bc46f0c7878409fa71a122a87d74532/artifacts
+creation_timestamp: 1758269456852
+experiment_id: '0'
+last_updated_timestamp: 1758269460631
+model_id: m-4bc46f0c7878409fa71a122a87d74532
+model_type: null
+name: GradientBoosting_model
+source_run_id: 3eb0c8ca3caf4e86ae4dd4e161a90cc9
+status: 2
+status_message: null

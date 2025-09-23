@@ -1,0 +1,14 @@
+artifact_uri: file:///c:/Users/User/Desktop/calculator/mlruns/0/cf390fb575614c2fb3668afabc10ec42/artifacts
+end_time: 1758273528546
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: cf390fb575614c2fb3668afabc10ec42
+run_name: SVR
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1758273524716
+status: 3
+tags: []
+user_id: User
