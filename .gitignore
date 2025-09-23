@@ -24,9 +24,6 @@ Thumbs.db
 *.ipynb_checkpoints
 
 # Data and model cache
-data/
-*.csv
-*.xlsx
 mlruns/
 
 # Модели
