@@ -30,7 +30,7 @@ df = pd.read_csv(DATASET_PATH)
 # ===== FastAPI =====
 app = FastAPI(title="Lighting AI Calculator", version="4.0")
 
-# Раздача статики (папка static должна существовать: static/index.html)
+# Раздача статики
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 @app.get("/")
@@ -134,43 +134,41 @@ def predict(data: InputData):
 
     # группа брендов по типу помещения (administrative/domestic/industrial/outdoor)
     group = ROOM_TO_BRAND.get(data.room_type, "domestic")
-    # сначала возьмём любой бренд группы (детерминированно)
     brand = rng.choice(BRAND_GROUPS[group])
 
     # 6) Физический baseline по количеству
     baseline_count = max(1, math.ceil((total_lumens or 0) / max(1, fixture_lm)))
 
-    # 7) Прогноз ML (budget не участвует в признаках)
+    # 7) Прогноз ML
     pred_ml = int(round(model.predict([[area_m2, data.ceiling_h or 0.0, required_lux, fixture_lm]])[0]))
 
-    # финальное количество: не ниже физики и не выше 1.5× базового (чтобы не раздувало)
+    # финальное количество: не ниже физики и не выше 1.5× базового
     fixtures_count = min(max(baseline_count, pred_ml), max(1, int(baseline_count * 1.5)))
 
-    # 8) Имя модели (пытаемся взять из датасета)
+    # 8) Имя модели из датасета
     model_name, brand_from_name = _pick_model_name_from_dataset(fixture_type, brand, rng)
-    brand = brand_from_name  # выравниваем бренд с тем, что в model_name
+    brand = brand_from_name
 
     # 9) Цена за штуку
-    # базовая ставка за люмен (можно вынести в SEGMENT_BASE_RATE, если добавишь в rules.py)
     base_rate = 0.5
     price_rub = int(fixture_lm * base_rate *
                     BRAND_PRICE_COEF.get(brand, 1.0) *
                     FIXTURE_COEFF.get(fixture_type, 1.0))
 
-    # легкая нормализация цен для бытовых/административных, чтобы не было экстримов
+    # нормализация цен
     if group in ("domestic", "administrative"):
         price_rub = max(800, min(price_rub, 6000))
 
     total_cost = int(fixtures_count * price_rub)
 
-    # 10) Бюджет: подбор более дешевого бренда, если не влезаем
+    # 10) Бюджет
     warning = None
     if total_cost > data.budget:
-        # ищем самый дешевый бренд в группе
+        # самый дешевый бренд в группе
         cheap_brand = min(BRAND_GROUPS[group], key=lambda b: BRAND_PRICE_COEF.get(b, 1.0))
 
         if cheap_brand != brand:
-            # пробуем подобрать модель этого бренда из датасета
+            # подбор модели этого бренда из датасета
             subset = df[(df["fixture_type"] == fixture_type) &
                         (df["model_name"].str.startswith(cheap_brand + " ", na=False))]
             if not subset.empty:
