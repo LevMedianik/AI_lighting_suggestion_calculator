@@ -46,8 +46,8 @@ calculator/
 
 В настройках:
 
-Build Command: pip install -r requirements.txt
-Start Command: uvicorn main:app --host 0.0.0.0 --port 10000
+Build Command: ```pip install -r requirements.txt```
+Start Command: ```uvicorn main:app --host 0.0.0.0 --port 10000```
 После деплоя Render предоставит ссылку, по которой будет доступен сайт.
 
 # 📸 Интерфейс
