@@ -52,16 +52,16 @@ calculator/
 
 ## ☁️ Running on Render
 
-If you want to deploy the calculator locally:
-1) Go to render.com
-2) Create a New Web Service
-3) Specify the GitHub repository
+If you want to deploy the calculator locally:  
+1) Go to render.com  
+2) Create a New Web Service  
+3) Specify the GitHub repository  
 
 In the settings:
 
-Build Command: ```pip install -r requirements.txt```
-Start Command: ```uvicorn main:app --host 0.0.0.0 --port 10000```
-After deployment, Render will provide a link to access the site
+Build Command: ```pip install -r requirements.txt```  
+Start Command: ```uvicorn main:app --host 0.0.0.0 --port 10000```  
+After deployment, Render will provide a link to access the site  
 
 ---
 
@@ -162,16 +162,16 @@ calculator/
 
 ## ☁️ Запуск на Render
 
-Если вы хотите развернуть калькулятор у себя:
-1) зайдите на render.com
-2) создайте New Web Service
-3) укажите репозиторий GitHub
+Если вы хотите развернуть калькулятор у себя:  
+1) зайдите на render.com  
+2) создайте New Web Service  
+3) укажите репозиторий GitHub  
 
 В настройках:
 
-Build Command: ```pip install -r requirements.txt```
-Start Command: ```uvicorn main:app --host 0.0.0.0 --port 10000```
-После деплоя Render предоставит ссылку, по которой будет доступен сайт
+Build Command: ```pip install -r requirements.txt```  
+Start Command: ```uvicorn main:app --host 0.0.0.0 --port 10000```  
+После деплоя Render предоставит ссылку, по которой будет доступен сайт  
 
 ---
 
