@@ -130,9 +130,11 @@ API endpoint:
 
 ### ☁️ Via URL
 Production deployment (Render): 
-```https://ai-lighting-suggestion-calculator.   onrender.com``` 
-API endpoint:   
-```https://ai-lighting-suggestion-calculator.onrender.com/predict```
+```https://ai-lighting-suggestion-calculator.onrender.com```    
+
+API endpoint:
+```https://ai-lighting-suggestion-calculator.onrender.com/predict```    
+
 The frontend automatically uses the current host as API base, so the same UI works both locally and in the cloud.
 
 ---
@@ -293,8 +295,10 @@ API-эндпоинт:
 ### ☁️ По ссылке
 Через облачный сервер Render:   
 ```https://ai-lighting-suggestion-calculator.onrender.com```    
+
 API-эндпоинт:   
 ```https://ai-lighting-suggestion-calculator.onrender.com/predict```    
+
 Фронтенд автоматически использует текущий хост в качестве базовой точки API, поэтому один и тот же пользовательский интерфейс работает как локально, так и в облаке.
 
 ---
