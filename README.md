@@ -122,8 +122,6 @@ python evaluate.py
 uvicorn calculator.main:app --reload
 ```
 
----
-
 ## ⚠️ Limitations
 
 * Synthetic dataset
