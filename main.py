@@ -1,7 +1,7 @@
 import os
 import math
-import random
 import hashlib
+from pathlib import Path
 from typing import Optional
 import joblib
 import pandas as pd
@@ -45,17 +45,16 @@ class InputData(BaseModel):
     ceiling_h: float
     budget: float
 
+def baseline_fixture_count(total_lumens: int, fixture_lm: int) -> int:
+    """
+    Deterministic physics baseline:
+    minimum fixtures needed to meet required luminous flux.
+    """
+    total_lumens = int(total_lumens or 0)
+    fixture_lm = int(fixture_lm or 1)
+    return max(1, math.ceil(max(0, total_lumens) / max(1, fixture_lm)))
 
 # ===== Вспомогательные функции =====
-def _seed_from_payload(room_type: str, area_m2: float, ceiling_h: float) -> int:
-    """
-    Делаем выбор типа/люменов/бренда детерминированным для одинакового ввода.
-    Бюджет намеренно не учитываем в seed.
-    """
-    s = f"{room_type}|{round(area_m2, 3)}|{round(ceiling_h, 3)}"
-    return int(hashlib.sha256(s.encode()).hexdigest(), 16) % (2**32)
-
-
 def _calc_area_for_outdoor(room_type: str, area_m2: Optional[float], length_m: Optional[float]) -> float:
     """
     Для улицы и аварийного выхода считаем условную площадь как длина × стандартная ширина.
@@ -71,36 +70,62 @@ def _calc_area_for_outdoor(room_type: str, area_m2: Optional[float], length_m: O
         return max(0.0, (length_m or 0.0) * width)
     # помещения внутри зданий
     return float(area_m2 or 0.0)
-
-
-def _pick_model_name_from_dataset(fixture_type: str, brand_hint: Optional[str], rng: random.Random) -> tuple[str, str]:
+def pick_model_name_deterministic(df: pd.DataFrame, fixture_type: str, brand: str) -> str:
     """
-    Возвращает (model_name, brand), стараясь выбрать модель из датасета под тип светильника
-    и, если задано, под нужный бренд. Если подходящих строк нет — формирует fallback имя.
+    Pick the cheapest model within a fixture_type (optionally filtered by brand if present).
+    Falls back to a generic name if dataset doesn't contain needed columns.
     """
-    subset = df[df["fixture_type"] == fixture_type]
+    subset = df[df.get("fixture_type") == fixture_type] if "fixture_type" in df.columns else df.copy()
 
-    if brand_hint:
-        # ищем модели, чьё имя начинается с brand_hint + пробел
-        branded = subset[subset["model_name"].str.startswith(brand_hint + " ", na=False)]
-        if not branded.empty:
-            row = branded.sample(1, random_state=rng.randint(0, 10**9)).iloc[0]
-            model_name = str(row["model_name"])
-            brand = model_name.split()[0]
-            return model_name, brand
+    # If dataset contains brand column, try to filter by it.
+    if "brand" in subset.columns:
+        subset_brand = subset[subset["brand"] == brand]
+        if len(subset_brand) > 0:
+            subset = subset_brand
 
-    if not subset.empty:
-        row = subset.sample(1, random_state=rng.randint(0, 10**9)).iloc[0]
-        model_name = str(row["model_name"])
-        brand = model_name.split()[0]
-        return model_name, brand
+    if len(subset) == 0:
+        return f"{fixture_type} Model"
 
-    # fallback, если датасет пуст по этому типу
-    brand = brand_hint or "DemoBrand"
-    suffix = "".join(rng.choices("ABCDEFGHIJKLMNOPQRSTUVWXYZ", k=2)) + str(rng.randint(1000, 9999))
-    model_name = f"{brand} {fixture_type} {suffix}"
-    return model_name, brand
+    # Prefer cheapest by price if column exists
+    if "price_rub" in subset.columns:
+        row = subset.sort_values("price_rub", ascending=True).iloc[0]
+    else:
+        row = subset.iloc[0]
 
+    # Use model_name if exists
+    if "model_name" in row.index:
+        return str(row["model_name"])
+
+    return f"{fixture_type} Model"
+
+def deterministic_fixture_type(room_type: str) -> str:
+    variants = ROOM_TO_FIXTURES.get(room_type, [])
+    return sorted(variants)[0] if variants else "Панельный"
+
+
+def deterministic_brand(room_type: str) -> str:
+    group = ROOM_TO_BRAND.get(room_type, "domestic")
+    candidates = BRAND_GROUPS.get(group, [])
+    if not candidates:
+        return "Generic"
+    return min(candidates, key=lambda b: BRAND_PRICE_COEF.get(b, 1.0))
+
+def deterministic_fixture_type(room_type: str) -> str:
+    variants = ROOM_TO_FIXTURES.get(room_type, [])
+    return sorted(variants)[0] if variants else "Панельный"
+
+
+def deterministic_fixture_lm(fixture_type: str) -> int:
+    lm_low, lm_high = TYPICAL_LM.get(fixture_type, (2500, 3500))
+    return int((lm_low + lm_high) / 2)
+
+
+def deterministic_brand(room_type: str) -> str:
+    group = ROOM_TO_BRAND.get(room_type, "domestic")
+    candidates = BRAND_GROUPS.get(group, [])
+    if not candidates:
+        return "Generic"
+    return min(candidates, key=lambda b: BRAND_PRICE_COEF.get(b, 1.0))
 
 # ===== Основной эндпоинт =====
 @app.post("/predict")
@@ -121,23 +146,15 @@ def predict(data: InputData):
     # 4) Суммарные люмены
     total_lumens = int(round(required_lux * area_m2 * height_factor))
 
-    # 5) Детерминированный выбор типа/люменов/бренда
-    seed = _seed_from_payload(data.room_type, area_m2, data.ceiling_h or 0.0)
-    rng = random.Random(seed)
+    # 5) Детерминированный выбор
 
-    # тип светильника
-    fixture_type = rng.choice(ROOM_TO_FIXTURES[data.room_type])
-
-    # световой поток одного светильника
-    lm_low, lm_high = TYPICAL_LM.get(fixture_type, (2500, 3500))
-    fixture_lm = rng.randint(lm_low, lm_high)
-
-    # группа брендов по типу помещения (administrative/domestic/industrial/outdoor)
-    group = ROOM_TO_BRAND.get(data.room_type, "domestic")
-    brand = rng.choice(BRAND_GROUPS[group])
+    fixture_type = deterministic_fixture_type(data.room_type)
+    fixture_lm = deterministic_fixture_lm(fixture_type)
+    brand = deterministic_brand(data.room_type)
+    model_name = pick_model_name_deterministic(df, fixture_type, brand)
 
     # 6) Физический baseline по количеству
-    baseline_count = max(1, math.ceil((total_lumens or 0) / max(1, fixture_lm)))
+    baseline_count = baseline_fixture_count(total_lumens, fixture_lm)
 
     # 7) Прогноз ML
     pred_ml = int(round(model.predict([[area_m2, data.ceiling_h or 0.0, required_lux, fixture_lm]])[0]))
@@ -145,9 +162,6 @@ def predict(data: InputData):
     # финальное количество: не ниже физики и не выше 1.5× базового
     fixtures_count = min(max(baseline_count, pred_ml), max(1, int(baseline_count * 1.5)))
 
-    # 8) Имя модели из датасета
-    model_name, brand_from_name = _pick_model_name_from_dataset(fixture_type, brand, rng)
-    brand = brand_from_name
 
     # 9) Цена за штуку
     base_rate = 0.5
@@ -156,6 +170,8 @@ def predict(data: InputData):
                     FIXTURE_COEFF.get(fixture_type, 1.0))
 
     # нормализация цен
+    group = ROOM_TO_BRAND.get(data.room_type, "domestic")
+
     if group in ("domestic", "administrative"):
         price_rub = max(800, min(price_rub, 6000))
 
@@ -163,35 +179,52 @@ def predict(data: InputData):
 
     # 10) Бюджет
     warning = None
-    if total_cost > data.budget:
+    if data.budget is not None and total_cost > data.budget:
         # самый дешевый бренд в группе
-        cheap_brand = min(BRAND_GROUPS[group], key=lambda b: BRAND_PRICE_COEF.get(b, 1.0))
+        group_brands = BRAND_GROUPS.get(group, [])
+        if group_brands:
+            cheap_brand = min(group_brands, key=lambda b: BRAND_PRICE_COEF.get(b, 1.0))
+        else:
+            cheap_brand = brand  # fallback
 
         if cheap_brand != brand:
-            # подбор модели этого бренда из датасета
-            subset = df[(df["fixture_type"] == fixture_type) &
-                        (df["model_name"].str.startswith(cheap_brand + " ", na=False))]
-            if not subset.empty:
-                row = subset.sample(1, random_state=rng.randint(0, 10**9)).iloc[0]
+            # подбор модели этого бренда из датасета (детерминированно)
+            subset = df[df["fixture_type"] == fixture_type].copy()
+
+            # если в model_name зашит бренд префиксом "BRAND ..."
+            subset_brand = subset[subset["model_name"].str.startswith(cheap_brand + " ", na=False)]
+            if not subset_brand.empty:
+                # берём самую дешёвую, если есть price_rub в датасете
+                if "price_rub" in subset_brand.columns:
+                    row = subset_brand.sort_values("price_rub", ascending=True).iloc[0]
+                else:
+                    row = subset_brand.iloc[0]
                 model_name = str(row["model_name"])
             else:
-                # fallback, если в датасете нет такого сочетания
-                suffix = "".join(rng.choices("ABCDEFGHIJKLMNOPQRSTUVWXYZ", k=2)) + str(rng.randint(1000, 9999))
-                model_name = f"{cheap_brand} {fixture_type} {suffix}"
+                # fallback: без RNG (детерминированно)
+                model_name = f"{cheap_brand} {fixture_type} DEMO"
 
             brand = cheap_brand
-            price_rub = int(fixture_lm * base_rate *
-                            BRAND_PRICE_COEF.get(brand, 1.0) *
-                            FIXTURE_COEFF.get(fixture_type, 1.0))
+
+            # пересчёт цены детерминированно
+            price_rub = int(
+                fixture_lm * base_rate
+                * BRAND_PRICE_COEF.get(brand, 1.0)
+                * FIXTURE_COEFF.get(fixture_type, 1.0)
+            )
             if group in ("domestic", "administrative"):
                 price_rub = max(800, min(price_rub, 6000))
+
             total_cost = int(fixtures_count * price_rub)
 
         if total_cost > data.budget:
-            warning = f"⚠ Недостаточно средств: требуется {total_cost:,} ₽, бюджет {data.budget:,} ₽.".replace(",", " ")
+            warning = (
+                f"⚠ Недостаточно средств: требуется {total_cost:,} ₽, бюджет {data.budget:,} ₽."
+                .replace(",", " ")
+            )
         else:
             warning = f"✅ Подобран более доступный бренд ({brand}), чтобы уложиться в бюджет."
-
+            
     # 11) Ответ
     return {
         "room_type": data.room_type,
