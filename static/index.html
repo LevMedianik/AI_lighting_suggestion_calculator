@@ -213,7 +213,24 @@
 
   <!-- Script -->
   <script>
-    const API_URL = "https://ai-lighting-suggestion-calculator.onrender.com/predict";        // изменить в соответствии с сервером
+    // 1) Default: same origin (works for local + cloud when UI and API are served by the same FastAPI app)
+    let API_URL = `${window.location.origin}/predict`;
+
+    // 2) Optional override via query param: ?api=https://your-host/predict
+    const params = new URLSearchParams(window.location.search);
+    const apiParam = params.get("api");
+    if (apiParam) {
+      API_URL = apiParam;
+      // optionally persist choice
+      try { localStorage.setItem("lighting_api_url", apiParam); } catch (e) {}
+    } else {
+      // 3) Optional override via localStorage (persisted between reloads)
+      try {
+        const stored = localStorage.getItem("lighting_api_url");
+        if (stored) API_URL = stored;
+      } catch (e) {}
+    }
+    
     const form = document.getElementById("lighting-form");
     const statusEl = document.getElementById("status");
     const placeholderEl = document.getElementById("placeholder");

@@ -115,12 +115,26 @@ This behavior is expected when training on data closely aligned with determinist
 
 ## 🚀 Running the Project
 
+### Local
 ```bash
 python data_generator.py
 python train.py
 python evaluate.py
-uvicorn calculator.main:app --reload
+uvicorn main:app --reload
 ```
+Open in browser:    
+```http://127.0.0.1:8000``` 
+API endpoint:   
+```POST /predict``` 
+
+### ☁️ Via URL
+Production deployment (Render): 
+```https://ai-lighting-suggestion-calculator.   onrender.com``` 
+API endpoint:   
+```https://ai-lighting-suggestion-calculator.onrender.com/predict```
+The frontend automatically uses the current host as API base, so the same UI works both locally and in the cloud.
+
+---
 
 ## ⚠️ Limitations
 
@@ -262,12 +276,24 @@ Norms → Physics Baseline → ML Regression → Constraints → Result
 
 ## 🚀 Развёртывание
 
+### Локально
 ```bash
 python data_generator.py
 python train.py
 python evaluate.py
-uvicorn calculator.main:app --reload
+uvicorn main:app --reload
 ```
+Откройте в браузере:    
+```http://127.0.0.1:8000``` 
+API-эндпоинт:   
+```POST /predict``` 
+
+### ☁️ По ссылке
+Через облачный сервер Render:   
+```https://ai-lighting-suggestion-calculator.onrender.com```    
+API-эндпоинт:   
+```https://ai-lighting-suggestion-calculator.onrender.com/predict```    
+Фронтенд автоматически использует текущий хост в качестве базовой точки API, поэтому один и тот же пользовательский интерфейс работает как локально, так и в облаке.
 
 ---
 
