@@ -123,7 +123,8 @@ python evaluate.py
 uvicorn main:app --reload
 ```
 Open in browser:    
-```http://127.0.0.1:8000``` 
+```http://127.0.0.1:8000```
+
 API endpoint:   
 ```POST /predict``` 
 
@@ -284,7 +285,8 @@ python evaluate.py
 uvicorn main:app --reload
 ```
 Откройте в браузере:    
-```http://127.0.0.1:8000``` 
+```http://127.0.0.1:8000```
+
 API-эндпоинт:   
 ```POST /predict``` 
 
